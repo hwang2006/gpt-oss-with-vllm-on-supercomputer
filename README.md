@@ -55,14 +55,45 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - ✅ Generic SLURM clusters with Singularity
 - ✅ NVIDIA H200, A100, V100 GPUs
 
-## 🚀 Quick Start
+## KISTI Neuron GPU Cluster and Conda Installation
+have a look at a
+### KISTI Neuron GPU Cluster 
+https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#kisti-neuron-gpu-cluster
 
-### 1. Clone and Setup
+### Conda Installation
+https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda
+
+## Clone the Repository
+to set up this repository on your scratch directory.
+```
+[glogin01]$ cd /scratch/$USER
+[glogin01]$ git clone https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer.git
+[glogin01]$ cd gpt-oss-with-ollama-on-supercomputer
+```
+
+## Build Singularity Image
 ```bash
-# On your HPC login node
-cd /scratch/$USER
-git clone https://github.com/hwang2006/gpt-oss-vllm-on-supercompter.git
-cd gpt-oss-vllm-on-supercomputer
+# Use your exact command that worked:
+singularity build --fakeroot vllm-gptoss.sif docker://vllm/vllm-openai:gptoss
+```
+
+## Preparing Ollama Singularity Image
+```bash
+[glogin01]$ singularity  ollama_latest.sif docker://ollama/ollama:latest
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+11.1MiB / 11.1MiB [===============================================] 100 % 48.6 MiB/s 0s
+1.0MiB / 1.0MiB [=================================================] 100 % 48.6 MiB/s 0s
+1.0GiB / 1.0GiB [=================================================] 100 % 48.6 MiB/s 0s
+28.3MiB / 28.3MiB [===============================================] 100 % 48.6 MiB/s 0s
+INFO:    Extracting OCI image...
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...
+[glogin01]$ singularity exec ./ollama_latest.sif ollama --version
+Warning: could not connect to a running Ollama instance
+Warning: client version is 0.11.4
+```
 
 # Set up environment
 conda create -n vllm-hpc python=3.11
