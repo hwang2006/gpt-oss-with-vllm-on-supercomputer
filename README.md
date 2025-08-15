@@ -1,8 +1,7 @@
-# gpt-oss-with-vllm-on-supercomputer
 # Running GPT-OSS with vLLM on Supercomputers (SLURM + Singularity)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![vLLM](https://img.shields.io/badge/vLLM-0.10.2+-green.svg)](https://github.com/vllm-project/vllm)
 [![HPC](https://img.shields.io/badge/HPC-SLURM%20%2B%20Singularity-orange.svg)]()
 
@@ -43,12 +42,11 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 ### Hardware
 - **HPC cluster** with SLURM scheduler
 - **NVIDIA GPUs** (H200, A100, V100, etc.)
-- **CUDA 12.1+**
-- **Minimum 32GB GPU memory** (for 20B models)
+- **CUDA 12.8+**
 
 ### Software
-- **Singularity/Apptainer** 3.5+
-- **Python** 3.8+
+- **Singularity** 3.5+
+- **Python** 3.10+
 - **SLURM** job scheduler
 - **SSH access** for tunneling
 
@@ -63,8 +61,8 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 ```bash
 # On your HPC login node
 cd /scratch/$USER
-git clone https://github.com/YOUR_USERNAME/gpt-oss-vllm-hpc.git
-cd gpt-oss-vllm-hpc
+git clone https://github.com/hwang2006/gpt-oss-vllm-on-supercompter.git
+cd gpt-oss-vllm-on-supercomputer
 
 # Set up environment
 conda create -n vllm-hpc python=3.11
