@@ -53,7 +53,6 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 ### Tested Environments
 - KISTI Neuron GPU Cluster
 - Generic SLURM clusters with Singularity
-- NVIDIA H200, A100, V100 GPUs
 
 ## Conda Setup on KISTI Neuron GPU Cluster
 
