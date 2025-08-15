@@ -55,14 +55,11 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - Generic SLURM clusters with Singularity
 - NVIDIA H200, A100, V100 GPUs
 
-
 ## Conda Setup on KISTI Neuron GPU Cluster
 
 This repository has been specifically tested for the [KISTI Neuron GPU Cluster](https://www.ksc.re.kr/eng/resources/neuron).
 
-- **Cluster Overview**: [KISTI Neuron Documentation](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#kisti-neuron-gpu-cluster)
 - **Conda Setup**: [Installation Guide](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda)
-- **SLURM Usage**: Refer to cluster documentation for job submission guidelines
 
 ## Clone the Repository
 to set up this repository on your scratch directory.
