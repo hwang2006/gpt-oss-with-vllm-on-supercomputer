@@ -7,7 +7,7 @@
 
 This repository provides a complete setup for running [GPT-OSS](https://openai.com/index/gpt-oss/) and other large language models using [vLLM](https://github.com/vllm-project/vllm) on high-performance computing (HPC) clusters with SLURM and Singularity. It includes a user-friendly Gradio web interface and comprehensive API access.
 
-**🚀 Key Features:**
+** Key Features:**
 - **HPC Optimized**: Designed for SLURM job schedulers and Singularity containers
 - **Multi-GPU Support**: Tensor parallelism for large models
 - **Web Interface**: Beautiful Gradio chat interface
@@ -15,7 +15,7 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - **Easy Setup**: One-command deployment with automated monitoring
 - **Model Flexibility**: Support for various GPT-OSS model sizes
 
-## 🎯 Why vLLM for HPC?
+## Why vLLM for HPC?
 
 | Feature | Benefits |
 |---------|----------|
@@ -25,7 +25,7 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 | **Model Support** | Direct HuggingFace Hub integration |
 | **Production Ready** | Battle-tested for high-throughput inference |
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
@@ -37,7 +37,7 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - [Examples](#examples)
 - [Contributing](#contributing)
 
-## 🔧 Requirements
+## Requirements
 
 ### Hardware
 - **HPC cluster** with SLURM scheduler
@@ -51,24 +51,18 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - **SSH access** for tunneling
 
 ### Tested Environments
-- ✅ KISTI Neuron GPU Cluster
-- ✅ Generic SLURM clusters with Singularity
-- ✅ NVIDIA H200, A100, V100 GPUs
+- KISTI Neuron GPU Cluster
+- Generic SLURM clusters with Singularity
+- NVIDIA H200, A100, V100 GPUs
 
 
-## 🏛️ KISTI Neuron GPU Cluster Setup
+## Conda Setup on KISTI Neuron GPU Cluster
 
-This repository has been specifically tested and optimized for the KISTI Neuron supercomputer. For detailed cluster information and account setup:
+This repository has been specifically tested for the [KISTI Neuron GPU Cluster](https://www.ksc.re.kr/eng/resources/neuron).
 
-### 📖 Essential Resources
 - **Cluster Overview**: [KISTI Neuron Documentation](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#kisti-neuron-gpu-cluster)
 - **Conda Setup**: [Installation Guide](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda)
 - **SLURM Usage**: Refer to cluster documentation for job submission guidelines
-
-### 🔑 Access Requirements
-- Valid KISTI account with GPU allocation
-- SSH key-based authentication configured
-- Scratch directory quota (minimum 500GB recommended)
 
 ## Clone the Repository
 to set up this repository on your scratch directory.
