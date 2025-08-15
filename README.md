@@ -50,7 +50,7 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 - **SLURM** job scheduler
 - **SSH access** for tunneling
 
-## Conda Setup on KISTI Neuron GPU Cluster
+## Install Conda on KISTI Neuron GPU Cluster
 
 This repository has been specifically tested for the [KISTI Neuron GPU Cluster](https://www.ksc.re.kr/eng/resources/neuron).
 
@@ -73,7 +73,7 @@ to set up this repository on your scratch directory.
 vllm                              0.10.1+gptoss
 ```
 
-## Creating a Conda Virtual Environment
+## Create a Conda Virtual Environment
 1. Create a conda virtual environment with a python version 3.11+
 ```
 [glogin01]$ conda create -n vllm-hpc python=3.11
