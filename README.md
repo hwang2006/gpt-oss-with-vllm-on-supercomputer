@@ -178,7 +178,7 @@ curl -s "$BASE/v1/models" | jq .
 curl -sS "$BASE/v1/chat/completions"   -H 'Content-Type: application/json'   -d '{
     "model": "openai/gpt-oss-20b",
     "messages": [{"role":"user","content":"Say hello in Korean. Reply with just the greeting."}],
-    "max_tokens": 64,
+    "max_tokens": 256,
     "stop": ["</think>"]
   }' | jq -r '
     .choices[0].message as $m
@@ -194,7 +194,7 @@ curl -sS "$BASE/v1/chat/completions"   -H 'Content-Type: application/json'   -d 
 curl -sS "$BASE/v1/responses"   -H 'Content-Type: application/json'   -d '{
     "model": "openai/gpt-oss-20b",
     "input": "Say hello in Korean. Reply with just the greeting.",
-    "max_output_tokens": 64
+    "max_output_tokens": 256
   }' | jq -r '.output_text // (.output[0].content[0].text // "no text")'
 ```
 
