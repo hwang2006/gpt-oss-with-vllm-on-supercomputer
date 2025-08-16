@@ -280,7 +280,7 @@ Run that **on your laptop**, then open:
 - **Stuck at “Still preparing vLLM API…”**  
   Check the vLLM log printed by the job:
   ```
-  /scratch/$USER/vllm-hpc/logs/vllm_server_<JOBID>.log
+  /scratch/$USER/gpt-oss-with-vllm-on-supercomputer/logs/vllm_server_<JOBID>.log
   ```
   On first use of a model, downloads/compile/graph capture can take time. Progress bars (`--use-tqdm-on-load`) are enabled in logs.
 
