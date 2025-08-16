@@ -229,15 +229,11 @@ Run that **on your laptop**, then open:
 
 1) Open the SSH tunnel (example on Windows Command Prompt):
 
-<p align="center">
-  <img src="docs/images/port-forwarding.png" alt="SSH port forwarding in Windows Terminal" width="900">
-</p>
+<img width="979" height="409" alt="Image" src="https://github.com/user-attachments/assets/82edaff4-9325-4205-8f37-55099e476e98" />
 
 2) Open the Gradio interface at `http://localhost:7860`:
 
-<p align="center">
-  <img src="docs/images/gradio-ui.png" alt="vLLM Gradio UI connected to openai/gpt-oss-20b" width="1100">
-</p>
+<img width="1118" height="680" alt="Image" src="https://github.com/user-attachments/assets/b977ac3d-25aa-4ba8-bac0-7c0d29f92c43" />
 
 > **Where to place images**: add files to `docs/images/` in your repo:
 > ```bash
