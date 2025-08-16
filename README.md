@@ -142,7 +142,7 @@ The job script starts:
 
 ```bash
 # defaults: --model Qwen/Qwen3-0.6B --vllm-port 8000 --gradio-port 7860
-sbatch vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000   --sif /scratch/$USER/vllm-hpc/vllm-gptoss.sif
+sbatch vllm_gradio_run_singularity.sh [--model <hf_model>] [--vllm-port <port>] [--gradio-port <port>] [--sif </path/to.sif>]
 ```
 
 You can also run interactively with `srun`:
