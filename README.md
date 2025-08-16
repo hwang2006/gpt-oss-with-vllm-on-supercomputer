@@ -24,7 +24,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
   - [Usage](#usage)
   - [What the Script Does](#what-the-script-does)
 - [Verifying the API](#verifying-the-api)
-- [Switching Models](#switching-models)
+- [Switching Models & Ports](#switching-models--ports)
 - [SSH Tunneling](#ssh-tunneling)
   - [Screenshots](#screenshots)
 - [Troubleshooting](#troubleshooting)
@@ -58,13 +58,15 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
+> This repository has been tested on the **KISTI Neuron GPU Cluster**, but the steps are generic to most SLURM-based HPC systems.
+
 ---
 
 ## Prerequisites (SLURM HPC / KISTI Neuron example)
 
 Before you start the **Quickstart**, please ensure:
 
-- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the **KISTI Neuron GPU Cluster**).  
+- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron)).  
 - **Conda is installed** in your account. If you’re on KISTI Neuron, follow the Conda setup here:  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda>
 
@@ -198,17 +200,55 @@ curl -sS "$BASE/v1/responses"   -H 'Content-Type: application/json'   -d '{
 
 ---
 
-## Switching Models
+## Switching Models & Ports
 
-Pass a different Hugging Face model ID:
+### Switching Models
+Start the job with a different Hugging Face model ID. The first run warms the cache in `$HF_HOME/hub`, so subsequent runs are faster.
 
 ```bash
+# Batch
 sbatch vllm_gradio_run_singularity.sh --model Qwen/Qwen3-0.6B
 # or
 sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
+
+# Interactive
+srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 ```
 
-The first run will populate your HF cache on scratch (`$HF_HOME/hub`). Subsequent runs are much faster.
+> Tip: Switching models means starting a new job (or restarting the script) so vLLM can load/compile the new weights.
+
+### Switching Ports (vLLM & Gradio)
+If the defaults are busy (vLLM **8000**, Gradio **7860**), pass custom ports:
+
+```bash
+# Batch
+sbatch vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000
+
+# Interactive
+srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000
+```
+
+The script writes a matching port-forwarding command to:
+```
+/scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
+```
+
+If you need to craft it manually (on your laptop):
+```bash
+ssh -L localhost:7000:<NODE>:7000     -L localhost:9000:<NODE>:9000     <USER>@<CLUSTER_LOGIN_HOST>
+```
+
+**Verify with the new ports (on your laptop):**
+```bash
+BASE=http://127.0.0.1:9000
+curl -s "$BASE/v1/models" | jq .
+# Open the UI:
+#   http://localhost:7000
+```
+
+> Tips:
+> - If you see “address already in use,” pick unused ports (e.g., 9100/7100).
+> - Make sure your SSH command forwards the **same** ports you passed to the script.
 
 ---
 
@@ -225,13 +265,13 @@ Run that **on your laptop**, then open:
 
 ### Screenshots
 
-**Port forwarding command (example):**
+> Add these images to your repo at `assets/cmd_ui.png` and `assets/gradio_ui_vllm.png` (create the `assets/` folder if it doesn’t exist).
 
-<img width="979" height="409" alt="Image" src="https://github.com/user-attachments/assets/82edaff4-9325-4205-8f37-55099e476e98" />
+**Port forwarding command (example):**
+![Port forwarding example](assets/cmd_ui.png)
 
 **Launched Gradio UI:**
-
-<img width="1118" height="680" alt="Image" src="https://github.com/user-attachments/assets/b977ac3d-25aa-4ba8-bac0-7c0d29f92c43" />
+![Gradio UI with vLLM backend](assets/gradio_ui_vllm.png)
 
 ---
 
@@ -264,6 +304,11 @@ Run that **on your laptop**, then open:
 
 - **Related project (Ollama on supercomputers):**  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing>
+- vLLM OpenAI server image: `docker://vllm/vllm-openai:gptoss`
+- vLLM docs: <https://github.com/vllm-project/vllm>
+- SLURM docs: <https://slurm.schedmd.com/documentation.html>
+- Singularity/Apptainer: <https://apptainer.org/>
+- Hugging Face cache (`HF_HOME`): <https://huggingface.co/docs/huggingface_hub/en/package_reference/environment#cache-directory>
 
 ---
 
@@ -302,7 +347,7 @@ MIT — see [LICENSE](LICENSE).
 ```bibtex
 @software{gpt_oss_vllm_hpc_2025,
   title   = {GPT-OSS with vLLM on Supercomputers},
-  author  = {Hwang, Inyong},
+  author  = {Hwang, Soonwook},
   year    = {2025},
   url     = {https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer}
 }
@@ -311,4 +356,3 @@ MIT — see [LICENSE](LICENSE).
 ---
 
 **⭐ If this helps your work, please star the repo!**
-
