@@ -307,7 +307,7 @@ MIT — see [LICENSE](LICENSE).
 ```bibtex
 @software{gpt_oss_vllm_hpc_2025,
   title   = {GPT-OSS with vLLM on Supercomputers},
-  author  = {Hwang, Inyong},
+  author  = {Hwang, Soonwook},
   year    = {2025},
   url     = {https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer}
 }
