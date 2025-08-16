@@ -26,7 +26,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - [Verifying the API](#verifying-the-api)
 - [Switching Models](#switching-models)
 - [SSH Tunneling](#ssh-tunneling)
-  - [Screenshots](#screenshots)
+  - [Using Non‑Default Ports](#using-nondefault-ports)
 - [Troubleshooting](#troubleshooting)
 - [References](#references)
 - [Contributing](#contributing)
@@ -57,6 +57,8 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Singularity/Apptainer** 3.5+  
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
+
+> This has been tested on **KISTI Neuron** GPU Cluster. Steps are generic to most SLURM clusters.
 
 ---
 
@@ -95,8 +97,7 @@ When the job starts, the script writes a ready-to-copy **SSH port-forwarding** c
 ```
 /scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
 ```
-
-Run that command **on your local machine**, then open:
+Run that command **on your local machine** (Terminal/PowerShell), then open:
 - **Gradio UI:** http://localhost:7860  
 - **OpenAI-compatible API base:** http://localhost:8000/v1
 
@@ -140,13 +141,24 @@ The job script starts:
 
 ```bash
 # defaults: --model Qwen/Qwen3-0.6B --vllm-port 8000 --gradio-port 7860
-sbatch vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000   --sif /scratch/$USER/vllm-hpc/vllm-gptoss.sif
+sbatch vllm_gradio_run_singularity.sh \
+  --model openai/gpt-oss-20b \
+  --vllm-port 9000 \
+  --gradio-port 7000 \
+  --sif /scratch/$USER/vllm-hpc/vllm-gptoss.sif
 ```
 
 You can also run interactively with `srun`:
 ```bash
-srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
+srun -p <partition> --gres=gpu:1 --comment=pytorch \
+  ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 ```
+
+> **Tip:** You can also set environment variables as defaults:
+> ```bash
+> export VLLM_PORT=9000 PORT_GRADIO=7000
+> sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
+> ```
 
 ### What the Script Does
 
@@ -173,7 +185,9 @@ curl -s "$BASE/v1/models" | jq .
 **Chat Completions** — some reasoning models (e.g., GPT-OSS) return text in `reasoning_content` and leave `message.content = null`. This `jq` handles both and strips `<think>…</think>`:
 
 ```bash
-curl -sS "$BASE/v1/chat/completions"   -H 'Content-Type: application/json'   -d '{
+curl -sS "$BASE/v1/chat/completions" \
+  -H 'Content-Type: application/json' \
+  -d '{
     "model": "openai/gpt-oss-20b",
     "messages": [{"role":"user","content":"Say hello in Korean. Reply with just the greeting."}],
     "max_tokens": 64,
@@ -189,7 +203,9 @@ curl -sS "$BASE/v1/chat/completions"   -H 'Content-Type: application/json'   -d 
 **Responses API** (simpler):
 
 ```bash
-curl -sS "$BASE/v1/responses"   -H 'Content-Type: application/json'   -d '{
+curl -sS "$BASE/v1/responses" \
+  -H 'Content-Type: application/json' \
+  -d '{
     "model": "openai/gpt-oss-20b",
     "input": "Say hello in Korean. Reply with just the greeting.",
     "max_output_tokens": 64
@@ -223,13 +239,38 @@ Run that **on your laptop**, then open:
 - UI: `http://localhost:<GRADIO_PORT>` (default `7860`)
 - API: `http://localhost:<VLLM_PORT>/v1` (default `8000`)
 
-### Screenshots
+### Using Non‑Default Ports
 
-**Port forwarding command (example):**
+If you launched with `--gradio-port 7000 --vllm-port 9000`, your tunnel will look like:
+
+```bash
+ssh -L localhost:7000:<NODE-HOSTNAME>:7000 \
+    -L localhost:9000:<NODE-HOSTNAME>:9000 \
+    <USER>@<LOGIN-HOST>
+```
+
+You can also remap to different **local** ports if your laptop’s 7000/9000 are busy:
+
+```bash
+# Map local 17000 -> remote 7000 (UI), and local 19000 -> remote 9000 (API)
+ssh -L 17000:<NODE-HOSTNAME>:7000 \
+    -L 19000:<NODE-HOSTNAME>:9000 \
+    <USER>@<LOGIN-HOST>
+
+# Then open:
+#   UI:  http://localhost:17000
+#   API: http://localhost:19000/v1
+```
+
+> The script’s generated `port_forwarding_<JOBID>.txt` always reflects the **exact ports** you launched with.
+
+**Screenshots**
+
+_Port forwarding command (example):_  
 
 <img width="979" height="409" alt="Image" src="https://github.com/user-attachments/assets/82edaff4-9325-4205-8f37-55099e476e98" />
 
-**Launched Gradio UI:**
+_Launched Gradio UI:_  
 
 <img width="1118" height="680" alt="Image" src="https://github.com/user-attachments/assets/b977ac3d-25aa-4ba8-bac0-7c0d29f92c43" />
 
@@ -248,7 +289,7 @@ Run that **on your laptop**, then open:
   Some reasoning-style models (e.g., GPT-OSS) return text in `reasoning_content`. Use the `jq` filters above or strip `<think>` blocks in your client.
 
 - **Port already in use**  
-  Pass new ports: `--vllm-port 9000 --gradio-port 7000`.
+  Pass new ports: `--vllm-port 9000 --gradio-port 7000` (or set `VLLM_PORT`, `PORT_GRADIO`).
 
 - **Python too old for Gradio**  
   Ensure your *host* env is Python 3.10+ (`conda create -n vllm-hpc python=3.11`).
@@ -262,7 +303,7 @@ Run that **on your laptop**, then open:
 
 ## References
 
-- **Related project (Running GPT-OSS with Ollama on supercomputers):**  
+- **Related project (Ollama on supercomputers):**  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing>
 
 ---
