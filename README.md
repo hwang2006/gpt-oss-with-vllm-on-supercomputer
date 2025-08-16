@@ -58,7 +58,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
-> This repository has been tested on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron) with my own account, but the steps are generic to most SLURM-based HPC systems.
+> This repository has been preliminary tested on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron) with my own account, but the steps and environments are generic to most SLURM-based HPC systems.
 
 ---
 
@@ -95,7 +95,7 @@ sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 
 When the job starts, the script writes a ready-to-copy **SSH port-forwarding** command to a file like:
 ```
-/scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
+/scratch/$USER/gpt-oss-with-vllm-on-supercomputer/port_forwarding_<JOBID>.txt
 ```
 
 Run that command **on your local machine**, then open:
