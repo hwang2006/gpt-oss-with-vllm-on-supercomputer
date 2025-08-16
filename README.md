@@ -67,7 +67,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 Before you start the **Quickstart**, please ensure:
 
 - You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the **KISTI Neuron GPU Cluster**).  
-- **Conda is installed** in your account. If you’re on KISTI Neuron, follow the Conda setup here:  
+- **Conda is installed** in your account. If you’re on HPC Clusters like the KISTI Neuron, follow the Conda setup here:  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda>
 
 ---
