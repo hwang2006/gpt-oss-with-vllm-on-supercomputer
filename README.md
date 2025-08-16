@@ -120,7 +120,7 @@ Successfully installed aiofiles-24.1.0 annotated-types-0.7.0 anyio-4.10.0 brotli
 ### Submit the Slurm Script
 - to launch both Ollama and Gradio server
 ```
-(ollama-hpc) [glogin01]$ sbatch vllm_gradio_run_singularity.sh
+(ollama-hpc) [glogin01]$ sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 Submitted batch job XXXXXX
 ```
 - to check if the servers are up and running
