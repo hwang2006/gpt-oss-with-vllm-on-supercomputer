@@ -3,7 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![vLLM](https://img.shields.io/badge/vLLM-0.10.2%2B-green.svg)](https://github.com/vllm-project/vllm)
-[![HPC](https://img.shields.io/badge/HPC-SLURM%20%2B%20Singularity-orange.svg)]()
+[![HPC](https://img.shields.io/badge/HPC-SLURM%2B-orange.svg)](https://slurm.schedmd.com/documentation.html)
+[![HPC](https://img.shields.io/badge/Container-Singularity%2B-indigo.svg)](https://docs.sylabs.io/guides/3.5/user-guide/introduction.html)
 
 This repository provides a complete setup for running **[GPT-OSS](https://openai.com/index/gpt-oss/)** and other Hugging Face models with **[vLLM](https://github.com/vllm-project/vllm)** on HPC clusters using **SLURM** and **Singularity**. It launches an **OpenAI-compatible REST API** and a **Gradio** web UI.
 
@@ -63,7 +64,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 
 Before you start the **Quickstart**, please ensure:
 
-- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the **KISTI Neuron GPU Cluster**).  
+- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron)).  
 - **Conda is installed** in your account. If you’re on KISTI Neuron, follow the Conda setup here:  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda>
 
