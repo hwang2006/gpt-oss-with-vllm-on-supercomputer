@@ -58,7 +58,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
-> This repository has been tested on the **KISTI Neuron GPU Cluster**, but the steps are generic to most SLURM-based HPC systems.
+> This repository has been tested on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron), but the steps are generic to most SLURM-based HPC systems.
 
 ---
 
@@ -66,7 +66,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 
 Before you start the **Quickstart**, please ensure:
 
-- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron)).  
+- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the **KISTI Neuron GPU Cluster**).  
 - **Conda is installed** in your account. If you’re on KISTI Neuron, follow the Conda setup here:  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda>
 
