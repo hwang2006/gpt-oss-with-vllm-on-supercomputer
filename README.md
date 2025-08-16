@@ -256,7 +256,7 @@ curl -s "$BASE/v1/models" | jq .
 
 After submit, read the generated file:
 ```
-/scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
+/scratch/$USER/gpt-oss-with-vllm-on-supercomputer/port_forwarding_<JOBID>.txt
 ```
 
 Run that **on your laptop**, then open:
