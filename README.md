@@ -262,7 +262,7 @@ Run that **on your laptop**, then open:
 
 ## References
 
-- **Related project (Ollama on supercomputers):**  
+- **Related project (Running GPT-OSS with Ollama on supercomputers):**  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing>
 
 ---
