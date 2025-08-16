@@ -1,3 +1,4 @@
+
 # Running GPT-OSS with vLLM on Supercomputers (SLURM + Singularity)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -23,6 +24,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - [Verifying the API](#verifying-the-api)
 - [Switching Models](#switching-models)
 - [SSH Tunneling](#ssh-tunneling)
+  - [Screenshots](#screenshots)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
@@ -91,7 +93,7 @@ When the job starts, the script writes a ready-to-copy **SSH port-forwarding** c
 ```
 /scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
 ```
-Run that command **on your local machine** (Terminal/Powershell), then open:
+Run that command **on your local machine** (Terminal/PowerShell), then open:
 - **Gradio UI:** http://localhost:7860  
 - **OpenAI-compatible API base:** http://localhost:8000/v1
 
@@ -222,6 +224,29 @@ After submit, read the generated file:
 Run that **on your laptop**, then open:
 - UI: `http://localhost:<GRADIO_PORT>` (default `7860`)
 - API: `http://localhost:<VLLM_PORT>/v1` (default `8000`)
+
+### Screenshots
+
+1) Open the SSH tunnel (example on Windows Command Prompt):
+
+<p align="center">
+  <img src="docs/images/port-forwarding.png" alt="SSH port forwarding in Windows Terminal" width="900">
+</p>
+
+2) Open the Gradio interface at `http://localhost:7860`:
+
+<p align="center">
+  <img src="docs/images/gradio-ui.png" alt="vLLM Gradio UI connected to openai/gpt-oss-20b" width="1100">
+</p>
+
+> **Where to place images**: add files to `docs/images/` in your repo:
+> ```bash
+> mkdir -p docs/images
+> # copy your screenshots
+> cp path/to/portforwarding.png docs/images/port-forwarding.png
+> cp path/to/gradio.png        docs/images/gradio-ui.png
+> git add docs/images && git commit -m "Add screenshots" && git push
+> ```
 
 ---
 
