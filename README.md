@@ -138,8 +138,6 @@ ssh -L localhost:7860:gpu50:7860 -L localhost:8000:gpu50:8000 qualis@neuron.ksc.
 ## Connect to the Gradio UI
 - Once the job starts, open a new SSH client (e.g., Putty, MobaXterm, PowerShell, Command Prompt, etc) on your local machine and run the port forwarding command displayed in port_forwarding_command_xxxxx.txt:
 
-<img width="979" height="409" alt="Image" src="https://github.com/user-attachments/assets/0f049941-809a-4d57-acf0-856e6db57510" />
-
 - Then, open http://localhost:7860 in your browser to access the Gradio UI and pull a gpt-oss model (for example, 'gpt-oss:latest') to the ollama server models directory (e.g., OLLAMA_MODELS="/scratch/$USER/.ollama" in the slurm script) from the [Ollama models site](https://ollama.com/search) 
 
 <img width="1134" height="707" alt="Image" src="https://github.com/user-attachments/assets/d26f62ce-99d5-479e-a7d4-79b1bb2eb009" />
@@ -147,7 +145,7 @@ ssh -L localhost:7860:gpu50:7860 -L localhost:8000:gpu50:8000 qualis@neuron.ksc.
 
 - Once the gpt-oss model is successfully downloaded, it will be listed in the 'Select Model' dropdown menu on the top right of the Gradio UI. You can start chatting with the gpt-oss model. You could also pull and chat with other models (e.g., llama3, mistral, etc) by pulling them from the Ollama models list site. 
 
-<img width="1141" height="657" alt="Image" src="https://github.com/user-attachments/assets/5991e328-7140-40b9-a5d0-cc4bebf08157" />
+<img width="1118" height="680" alt="Image" src="https://github.com/user-attachments/assets/b977ac3d-25aa-4ba8-bac0-7c0d29f92c43" />
 
 ## 🤝 Contributing
 
