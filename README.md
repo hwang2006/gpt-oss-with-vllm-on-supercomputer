@@ -232,13 +232,6 @@ Run that **on your laptop**, then open:
 
 <img width="1118" height="680" alt="Image" src="https://github.com/user-attachments/assets/b977ac3d-25aa-4ba8-bac0-7c0d29f92c43" />
 
-> Put your own screenshots at:
-> ```
-> docs/images/port-forwarding.png
-> docs/images/gradio-ui.png
-> ```
-> The relative paths above will render on GitHub automatically.
-
 ---
 
 ## Troubleshooting
