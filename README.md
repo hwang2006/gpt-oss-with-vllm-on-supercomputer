@@ -27,16 +27,6 @@ This repository provides a complete setup for running [GPT-OSS](https://openai.c
 
 ## Table of Contents
 
-- [Requirements](#requirements)
-- [Quick Start](#quick-start)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Reference](#api-reference)
-- [Performance Tuning](#performance-tuning)
-- [Troubleshooting](#troubleshooting)
-- [Examples](#examples)
-- [Contributing](#contributing)
-
 ## Requirements
 
 ### Hardware
