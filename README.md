@@ -54,11 +54,11 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 
 ### Software
 - **CUDA 12.x** runtime/driver on nodes (match your site’s module)  
-- **Singularity/Apptainer** 3.5+  
+- **Singularity** 3.5+  
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
-> This repository has been preliminary tested on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron) with my own account, but the steps and environments are generic to most SLURM-based HPC systems.
+> **Development Environment:** Developed and validated on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron), but the approach relies on standard HPC components (SLURM job scheduler, Singularity containers, NVIDIA GPUs) that are common across research computing facilities. Site-specific adjustments may be needed for directory structures, module names and partition configurations.
 
 ---
 
