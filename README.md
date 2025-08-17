@@ -6,7 +6,7 @@
 [![HPC](https://img.shields.io/badge/HPC-SLURM%2B-orange.svg)](https://slurm.schedmd.com/documentation.html)
 [![HPC](https://img.shields.io/badge/Container-Singularity%2B-indigo.svg)](https://docs.sylabs.io/guides/3.5/user-guide/introduction.html)
 
-This repository provides a complete setup for running **[GPT-OSS](https://openai.com/index/gpt-oss/)** and other Hugging Face models with **[vLLM](https://github.com/vllm-project/vllm)** on HPC clusters using **SLURM** and **Singularity**. It launches an **OpenAI-compatible REST API** and a **Gradio** web UI.
+This repository provides a complete setup for running **[GPT-OSS](https://openai.com/index/gpt-oss/)** and other Hugging Face models with **[vLLM](https://github.com/vllm-project/vllm)** on HPC clusters using **SLURM** and **Singularity**. It launches a **Gradio** web UI and an **OpenAI-compatible REST API**.
 
 > Tested on the [**KISTI Neuron GPU cluster**](https://www.ksc.re.kr/eng/resources/neuron); steps are generic for any **SLURM-managed HPC GPU cluster**.
 
