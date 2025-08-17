@@ -28,6 +28,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - [SSH Tunneling](#ssh-tunneling)
   - [Screenshots](#screenshots)
 - [Troubleshooting](#troubleshooting)
+- [Related Projects](#related-projects)
 - [References](#references)
 - [Contributing](#contributing)
 - [License](#license)
@@ -64,11 +65,9 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 
 ## Prerequisites (SLURM HPC / KISTI Neuron example)
 
-Before you start the **Quickstart**, please ensure:
-
-- You have access to an **HPC GPU cluster running the SLURM workload manager** (for example, the **KISTI Neuron GPU Cluster**).  
-- **Conda is installed** in your account. If you’re on HPC Clusters like the KISTI Neuron, follow the Conda setup here:  
-  <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda>
+Before you start the Quickstart, please ensure:
+- You have access to an HPC GPU cluster running the SLURM workload manager (for example, the KISTI Neuron GPU Cluster).
+- Conda is installed in your account. If you're on HPC Clusters like the KISTI Neuron, follow the Conda setup here: [https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing?tab=readme-ov-file#installing-conda)
 
 ---
 
@@ -84,7 +83,7 @@ cd gpt-oss-with-vllm-on-supercomputer
 singularity build --fakeroot vllm-gptoss.sif docker://vllm/vllm-openai:gptoss
 
 # Create a small host env for Gradio (UI only)
-module load gcc/10.2.0 cuda/12.1     # adjust to your site
+module load gcc/10.2.0 cuda/12.1 # adjust to your site
 conda create -y -n vllm-hpc python=3.11
 conda activate vllm-hpc
 pip install gradio
@@ -93,14 +92,14 @@ pip install gradio
 sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 ```
 
-When the job starts, the script writes a ready-to-copy **SSH port-forwarding** command to a file like:
+When the job starts, the script writes a ready-to-copy SSH port-forwarding command to a file like:
 ```
 /scratch/$USER/gpt-oss-with-vllm-on-supercomputer/port_forwarding_<JOBID>.txt
 ```
 
-Run that command **on your local machine**, then open:
-- **Gradio UI:** http://localhost:7860  
-- **OpenAI-compatible API base:** http://localhost:8000/v1
+Run that command on your local machine, then open:
+- **Gradio UI:** [http://localhost:7860](http://localhost:7860)
+- **OpenAI-compatible API base:** [http://localhost:8000/v1](http://localhost:8000/v1)
 
 ---
 
@@ -108,10 +107,14 @@ Run that command **on your local machine**, then open:
 
 ```bash
 singularity build --fakeroot vllm-gptoss.sif docker://vllm/vllm-openai:gptoss
+```
+
+Test the container:
+```bash
 singularity exec ./vllm-gptoss.sif python -c "import vllm, sys; print(vllm.__version__, sys.version)"
 ```
 
-> vLLM runs **inside** the SIF, so you don’t need to pip-install vLLM on the host.
+> vLLM runs inside the SIF, so you don't need to pip-install vLLM on the host.
 
 ---
 
@@ -124,7 +127,7 @@ conda activate vllm-hpc
 pip install gradio
 ```
 
-Optional but recommended (faster pulls & cache on scratch):
+**Optional but recommended** (faster pulls & cache on scratch):
 ```bash
 export HF_HOME=/scratch/$USER/.huggingface
 mkdir -p "$HF_HOME"
@@ -139,7 +142,6 @@ The job script starts:
 - **Gradio UI** on the host, pointing at the vLLM API
 
 ### Usage
-
 ```bash
 # defaults: --model Qwen/Qwen3-0.6B --vllm-port 8000 --gradio-port 7860
 sbatch vllm_gradio_run_singularity.sh [--model <hf_model>] [--vllm-port <port>] [--gradio-port <port>] [--sif </path/to.sif>]
@@ -147,18 +149,16 @@ sbatch vllm_gradio_run_singularity.sh [--model <hf_model>] [--vllm-port <port>] 
 
 You can also run interactively with `srun`:
 ```bash
-srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
+srun -p <partition> --gres=gpu:1 --comment=pytorch ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 ```
 
 ### What the Script Does
-
 - Ensures `HF_HOME` exists (or creates `/scratch/$USER/.huggingface`)
-- Prints detected Python and SIF path
-- Launches vLLM via:  
-  `singularity exec --nv "$SIF_PATH" vllm serve <MODEL> --host 0.0.0.0 --port <VLLM_PORT> ...`
+- Prints detected Python and SIF path  
+- Launches vLLM via: `singularity exec --nv "$SIF_PATH" vllm serve <MODEL> --host 0.0.0.0 --port <VLLM_PORT> ...`
 - Waits until `/v1/models` is responsive (with helpful log milestones)
 - Exports `OPENAI_BASE_URL=http://127.0.0.1:<VLLM_PORT>/v1` for the UI
-- Starts `vllm_web.py` Gradio app on `<GRADIO_PORT>`
+- Starts `vllm_web.py` Gradio app on `<GRADIO_PORT>`  
 - Writes an SSH command you can copy on your laptop to forward both ports
 
 ---
@@ -166,7 +166,6 @@ srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singulari
 ## Verifying the API
 
 Once port-forwarded (to your laptop):
-
 ```bash
 BASE=http://127.0.0.1:8000
 curl -s "$BASE/v1/models" | jq .
@@ -175,34 +174,32 @@ curl -s "$BASE/v1/models" | jq .
 **Chat Completions** — some reasoning models (e.g., GPT-OSS) return text in `reasoning_content` and leave `message.content = null`. This `jq` handles both and strips `<think>…</think>`:
 
 ```bash
-curl -sS "$BASE/v1/chat/completions"   -H 'Content-Type: application/json'   -d '{
-    "model": "openai/gpt-oss-20b",
-    "messages": [{"role":"user","content":"Say hello in Korean. Reply with just the greeting."}],
-    "max_tokens": 256,
-    "stop": ["</think>"]
-  }' | jq -r '
-    .choices[0].message as $m
-    | ($m.content // $m.reasoning_content // "")
-    | gsub("(?s)<think>.*?</think>"; "")
-    | gsub("^[[:space:]]+|[[:space:]]+$"; "")
-  '
+curl -sS "$BASE/v1/chat/completions" -H 'Content-Type: application/json' -d '{
+  "model": "openai/gpt-oss-20b",
+  "messages": [{"role":"user","content":"Say hello in Korean. Reply with just the greeting."}],
+  "max_tokens": 256,
+  "stop": ["</think>"]
+}' | jq -r '
+  .choices[0].message as $m
+  | ($m.content // $m.reasoning_content // "")
+  | gsub("(?s)<think>.*?</think>"; "")
+  | gsub("^[[:space:]]+|[[:space:]]+$"; "")
+'
 ```
 
 **Responses API** (simpler):
-
 ```bash
-curl -sS "$BASE/v1/responses"   -H 'Content-Type: application/json'   -d '{
-    "model": "openai/gpt-oss-20b",
-    "input": "Say hello in Korean. Reply with just the greeting.",
-    "max_output_tokens": 256
-  }' | jq -r '.output_text // (.output[0].content[0].text // "no text")'
+curl -sS "$BASE/v1/responses" -H 'Content-Type: application/json' -d '{
+  "model": "openai/gpt-oss-20b",
+  "input": "Say hello in Korean. Reply with just the greeting.",
+  "max_output_tokens": 256
+}' | jq -r '.output_text // (.output[0].content[0].text // "no text")'
 ```
 
 ---
 
 ## Switching Models & Ports
 
-### Switching Models
 Start the job with a different Hugging Face model ID. The first run warms the cache in `$HF_HOME/hub`, so subsequent runs are faster.
 
 ```bash
@@ -212,43 +209,40 @@ sbatch vllm_gradio_run_singularity.sh --model Qwen/Qwen3-0.6B
 sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 
 # Interactive
-srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
+srun -p <partition> --gres=gpu:1 --comment=pytorch ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b
 ```
 
-> Tip: Switching models means starting a new job (or restarting the script) so vLLM can load/compile the new weights.
+> **Tip:** Switching models means starting a new job (or restarting the script) so vLLM can load/compile the new weights.
 
-### Switching Ports (vLLM & Gradio)
-If the defaults are busy (vLLM **8000**, Gradio **7860**), pass custom ports:
-
+If the defaults are busy (vLLM 8000, Gradio 7860), pass custom ports:
 ```bash
 # Batch
-sbatch vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000
+sbatch vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b --vllm-port 9000 --gradio-port 7000
 
-# Interactive
-srun -p <partition> --gres=gpu:1 --comment=pytorch   ./vllm_gradio_run_singularity.sh   --model openai/gpt-oss-20b   --vllm-port 9000   --gradio-port 7000
+# Interactive  
+srun -p <partition> --gres=gpu:1 --comment=pytorch ./vllm_gradio_run_singularity.sh --model openai/gpt-oss-20b --vllm-port 9000 --gradio-port 7000
 ```
 
 The script writes a matching port-forwarding command to:
 ```
-/scratch/$USER/vllm-hpc/port_forwarding_<JOBID>.txt
+/scratch/$USER/gpt-oss-with-vllm-on-supercomputer/port_forwarding_<JOBID>.txt
 ```
 
 If you need to craft it manually (on your laptop):
 ```bash
-ssh -L localhost:7000:<NODE>:7000     -L localhost:9000:<NODE>:9000     <USER>@<CLUSTER_LOGIN_HOST>
+ssh -L localhost:7000:<NODE>:7000 -L localhost:9000:<NODE>:9000 <USER>@<CLUSTER_LOGIN_HOST>
 ```
 
-**Verify with the new ports (on your laptop):**
+Verify with the new ports (on your laptop):
 ```bash
 BASE=http://127.0.0.1:9000
 curl -s "$BASE/v1/models" | jq .
-# Open the UI:
-#   http://localhost:7000
+# Open the UI: http://localhost:7000
 ```
 
-> Tips:
-> - If you see “address already in use,” pick unused ports (e.g., 9100/7100).
-> - Make sure your SSH command forwards the **same** ports you passed to the script.
+**Tips:**
+- If you see "address already in use," pick unused ports (e.g., 9100/7100).
+- Make sure your SSH command forwards the same ports you passed to the script.
 
 ---
 
@@ -259,29 +253,31 @@ After submit, read the generated file:
 /scratch/$USER/gpt-oss-with-vllm-on-supercomputer/port_forwarding_<JOBID>.txt
 ```
 
-Run that **on your laptop**, then open:
-- UI: `http://localhost:<GRADIO_PORT>` (default `7860`)
-- API: `http://localhost:<VLLM_PORT>/v1` (default `8000`)
+Run that on your laptop, then open:
+- **UI:** `http://localhost:<GRADIO_PORT>` (default `7860`)
+- **API:** `http://localhost:<VLLM_PORT>/v1` (default `8000`)
 
 ### Screenshots
 
-> Add these images to your repo at `assets/cmd_ui.png` and `assets/gradio_ui_vllm.png` (create the `assets/` folder if it doesn’t exist).
+![Command Line Interface](assets/cmd_ui.png)
+*Example of the vLLM server startup and port forwarding setup*
 
-**Port forwarding command (example):**
-![Port forwarding example](assets/cmd_ui.png)
+![Gradio Web Interface](assets/gradio_ui_vllm.png)  
+*Gradio chat interface for interacting with GPT-OSS and other models*
 
-**Launched Gradio UI:**
-![Gradio UI with vLLM backend](assets/gradio_ui_vllm.png)
+> **Note:** Add these images to your repo at `assets/cmd_ui.png` and `assets/gradio_ui_vllm.png` (create the `assets/` folder if it doesn't exist).
+
+**Port forwarding command example:**
+```bash
+ssh -L localhost:7860:gpu05:7860 -L localhost:8000:gpu05:8000 qualis@neuron.ksc.re.kr
+```
 
 ---
 
 ## Troubleshooting
 
-- **Stuck at “Still preparing vLLM API…”**  
-  Check the vLLM log printed by the job:
-  ```
-  /scratch/$USER/gpt-oss-with-vllm-on-supercomputer/logs/vllm_server_<JOBID>.log
-  ```
+- **Stuck at "Still preparing vLLM API…"**  
+  Check the vLLM log printed by the job: `/scratch/$USER/gpt-oss-with-vllm-on-supercomputer/logs/vllm_server_<JOBID>.log`  
   On first use of a model, downloads/compile/graph capture can take time. Progress bars (`--use-tqdm-on-load`) are enabled in logs.
 
 - **`message.content` is `null`**  
@@ -291,22 +287,32 @@ Run that **on your laptop**, then open:
   Pass new ports: `--vllm-port 9000 --gradio-port 7000`.
 
 - **Python too old for Gradio**  
-  Ensure your *host* env is Python 3.10+ (`conda create -n vllm-hpc python=3.11`).
+  Ensure your host env is Python 3.10+ (`conda create -n vllm-hpc python=3.11`).
 
-- **Kill the job**
-  ```bash
-  scancel <JOBID>
-  ```
+- **Model download fails**  
+  Check your internet connection on compute nodes. Some clusters require proxy settings or have restricted internet access.
+
+- **Out of memory errors**  
+  Try a smaller model or enable tensor parallelism across multiple GPUs. Check the [Model Compatibility](#model-compatibility) table for memory requirements.
+
+- **Kill the job**  
+  `scancel <JOBID>`
+
+---
+
+## Related Projects
+
+- **[GPT-OSS with Ollama on Supercomputers](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing)** - Alternative implementation using Ollama instead of vLLM
+- **Comparison:** Ollama focuses on simplicity and GGUF models, while vLLM optimizes for performance with native PyTorch models
 
 ---
 
 ## References
 
-- **Related project (Running GPT-OSS with Ollama on a supercomputer):**  
-  <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing>
-- vLLM docs: <https://github.com/vllm-project/vllm>
-- SLURM docs: <https://slurm.schedmd.com/documentation.html>
-- Singularity: <https://docs.sylabs.io/guides/3.5/user-guide/introduction.html>
+- **vLLM OpenAI server image:** `docker://vllm/vllm-openai:gptoss`
+- **vLLM docs:** [https://github.com/vllm-project/vllm](https://github.com/vllm-project/vllm)
+- **SLURM docs:** [https://slurm.schedmd.com/documentation.html](https://slurm.schedmd.com/documentation.html)
+- **Singularity:** [https://docs.sylabs.io/guides/3.5/user-guide/introduction.html](https://docs.sylabs.io/guides/3.5/user-guide/introduction.html)
 
 ---
 
@@ -314,13 +320,12 @@ Run that **on your laptop**, then open:
 
 PRs welcome! Please open an issue first for larger changes.
 
-### Dev setup (host)
 ```bash
 git clone https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer.git
 cd gpt-oss-with-vllm-on-supercomputer
 conda create -y -n vllm-dev python=3.11
 conda activate vllm-dev
-pip install -r requirements-dev.txt  # if present
+pip install -r requirements-dev.txt # if present
 ```
 
 ---
@@ -333,9 +338,9 @@ MIT — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-- The vLLM team for an excellent inference engine  
+- The vLLM team for an excellent inference engine
 - OpenAI for releasing GPT-OSS  
-- KISTI for access to the Neuron GPU cluster  
+- KISTI for access to the Neuron GPU cluster
 - HPC admins & users who tested and shared feedback
 
 ---
@@ -344,13 +349,13 @@ MIT — see [LICENSE](LICENSE).
 
 ```bibtex
 @software{gpt_oss_vllm_hpc_2025,
-  title   = {GPT-OSS with vLLM on Supercomputers},
-  author  = {Hwang, Soonwook},
-  year    = {2025},
-  url     = {https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer}
+  title = {GPT-OSS with vLLM on Supercomputers},
+  author = {Hwang, Soonwook},
+  year = {2025},
+  url = {https://github.com/hwang2006/gpt-oss-with-vllm-on-supercomputer}
 }
 ```
 
 ---
 
-**⭐ If this helps your work, please star the repo!**
+⭐ **If this helps your work, please star the repo!**
