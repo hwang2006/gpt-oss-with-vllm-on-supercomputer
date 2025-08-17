@@ -315,7 +315,6 @@ An alternative implementation using Ollama instead of vLLM, featuring comprehens
 - **Python Integration:** Ready-to-use Python examples with `requests` library
 - **Batch Processing Scripts:** Shell scripts for automated inference workflows
 - **Health Monitoring:** API health checks and performance optimization tips
-- **Production-Ready:** Model warm-up strategies, context management, and troubleshooting guides
 
 **When to Choose Each:**
 - **Ollama Project:** Choose for comprehensive API coverage, extensive documentation, GGUF model support, and simpler deployment
