@@ -302,8 +302,24 @@ ssh -L localhost:7860:gpu05:7860 -L localhost:8000:gpu05:8000 qualis@neuron.ksc.
 
 ## Related Projects
 
-- **[GPT-OSS with Ollama on Supercomputers](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing)** - Alternative implementation using Ollama instead of vLLM
-- **Comparison:** Ollama focuses on simplicity and GGUF models, while vLLM optimizes for performance with native PyTorch models
+### **[GPT-OSS with Ollama on Supercomputers](https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing)**
+An alternative implementation using Ollama instead of vLLM, featuring comprehensive API documentation and examples.
+
+**Key Features:**
+- **Dual API Support:** Native Ollama API + OpenAI-compatible endpoints
+- **Comprehensive curl Examples:** Complete coverage of all Ollama API endpoints including:
+  - Model management (`/api/tags`, `/api/pull`, `/api/show`)
+  - Text generation (`/api/generate` with streaming/non-streaming)
+  - Chat completions (`/api/chat` with conversation context)
+  - Advanced parameters (temperature, top_p, top_k, context length)
+- **Python Integration:** Ready-to-use Python examples with `requests` library
+- **Batch Processing Scripts:** Shell scripts for automated inference workflows
+- **Health Monitoring:** API health checks and performance optimization tips
+- **Production-Ready:** Model warm-up strategies, context management, and troubleshooting guides
+
+**When to Choose Each:**
+- **Ollama Project:** Choose for comprehensive API coverage, extensive documentation, GGUF model support, and simpler deployment
+- **vLLM Project (this repo):** Choose for maximum inference performance, native HuggingFace integration, and tensor parallelism
 
 ---
 
