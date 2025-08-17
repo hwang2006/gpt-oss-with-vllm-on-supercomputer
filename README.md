@@ -8,7 +8,7 @@
 
 This repository provides a complete setup for running **[GPT-OSS](https://openai.com/index/gpt-oss/)** and other Hugging Face models with **[vLLM](https://github.com/vllm-project/vllm)** on HPC clusters using **SLURM** and **Singularity**. It launches an **OpenAI-compatible REST API** and a **Gradio** web UI.
 
-> Tested on the **KISTI Neuron** GPU cluster; steps are generic for any **SLURM-managed HPC GPU cluster**.
+> Tested on the [**KISTI Neuron GPU cluster**](https://www.ksc.re.kr/eng/resources/neuron); steps are generic for any **SLURM-managed HPC GPU cluster**.
 
 ---
 
@@ -58,7 +58,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
-> **Development Environment:** Developed and validated on the [**KISTI Neuron GPU Cluster**](https://www.ksc.re.kr/eng/resources/neuron), but the approach relies on standard HPC components (SLURM job scheduler, Singularity containers, NVIDIA GPUs) that are common across research computing facilities. Site-specific adjustments may be needed for directory structures, module names and partition configurations.
+> **Development Environment:** Developed and validated on the **KISTI Neuron GPU Cluster**, but the approach relies on standard HPC components (SLURM job scheduler, Singularity containers, NVIDIA GPUs) that are common across research computing facilities. Site-specific adjustments may be needed for directory structures, module names and partition configurations.
 
 ---
 
