@@ -302,9 +302,8 @@ Run that **on your laptop**, then open:
 
 ## References
 
-- **Related project (Running GPT-OSS with Ollama on supercomputers):**  
+- **Related project (Running GPT-OSS with Ollama on a supercomputer):**  
   <https://github.com/hwang2006/gpt-oss-with-ollama-on-supercomputing>
-- vLLM OpenAI server image: `docker://vllm/vllm-openai:gptoss`
 - vLLM docs: <https://github.com/vllm-project/vllm>
 - SLURM docs: <https://slurm.schedmd.com/documentation.html>
 - Singularity: <https://docs.sylabs.io/guides/3.5/user-guide/introduction.html>
