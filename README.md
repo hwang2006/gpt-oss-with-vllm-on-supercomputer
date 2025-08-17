@@ -58,7 +58,7 @@ This repository provides a complete setup for running **[GPT-OSS](https://openai
 - **Python 3.10+** (host side for Gradio UI only; vLLM runs inside the SIF)  
 - **SSH** access for port forwarding
 
-> **Development Environment:** Developed and validated on the **KISTI Neuron GPU Cluster**, but the approach relies on standard HPC components (SLURM job scheduler, Singularity containers, NVIDIA GPUs) that are common across research computing facilities. Site-specific adjustments may be needed for directory structures, module names and partition configurations.
+> **Development Environment:** Developed and validated on the **KISTI Neuron GPU Cluster**, but the approach relies on standard HPC components (SLURM job scheduler, Singularity containers, NVIDIA GPUs) that are common across research computing facilities. Site-specific adjustments may be needed for directory structures, module names, partition configurations, etc.
 
 ---
 
