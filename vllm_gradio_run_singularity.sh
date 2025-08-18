@@ -22,7 +22,7 @@ set +e
 # Defaults (overridable by CLI or env)
 #######################################
 SERVER="$(hostname)"
-PORT_GRADIO="${PORT_GRADIO:-7860}"
+GRADIO_PORT="${GRADIO_PORT:-7860}"
 VLLM_PORT="${VLLM_PORT:-8000}"
 VLLM_MODEL_DEFAULT="Qwen/Qwen3-0.6B"
 VLLM_MODEL="${VLLM_MODEL:-$VLLM_MODEL_DEFAULT}"
@@ -47,7 +47,7 @@ Usage: $0 [--model <hf_model>] [--vllm-port <port>] [--gradio-port <port>] [--si
 
 Examples:
   $0 --model openai/gpt-oss-20b
-  sbatch --export=ALL,VLLM_MODEL=openai/gpt-oss-20b,VLLM_PORT=9000,PORT_GRADIO=7000 $0
+  sbatch --export=ALL,VLLM_MODEL=openai/gpt-oss-20b,VLLM_PORT=9000,GRADIO_PORT=7000 $0
 EOF
 }
 
@@ -55,7 +55,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --model)        VLLM_MODEL="$2"; shift 2;;
     --vllm-port)    VLLM_PORT="$2"; shift 2;;
-    --gradio-port)  PORT_GRADIO="$2"; shift 2;;
+    --gradio-port)  GRADIO_PORT="$2"; shift 2;;
     --sif)          SIF_PATH="$2"; shift 2;;
     -h|--help)      print_help; exit 0;;
     *) echo "Unknown arg: $1"; print_help; exit 1;;
@@ -117,7 +117,7 @@ echo "Starting vLLM + Gradio"
 echo "Date: $(date)"
 echo "Server: $SERVER"
 echo "SLURM Job ID: ${SLURM_JOB_ID}"
-echo "Gradio Port: $PORT_GRADIO"
+echo "Gradio Port: $GRADIO_PORT"
 echo "vLLM Port: $VLLM_PORT"
 echo "Model: ${VLLM_MODEL:-$VLLM_MODEL_DEFAULT}"
 echo "HF_HOME: ${HF_HOME} (pre-set: ${HF_PRESET})"
@@ -125,7 +125,7 @@ echo "vLLM download dir: ${CACHE_ROOT} (free: ${CACHE_FREE})"
 echo "SIF: ${SIF_PATH}"
 echo "========================================"
 
-echo "ssh -L localhost:${PORT_GRADIO}:${SERVER}:${PORT_GRADIO} -L localhost:${VLLM_PORT}:${SERVER}:${VLLM_PORT} ${USER}@neuron.ksc.re.kr" > "$PORT_FWD_FILE"
+echo "ssh -L localhost:${GRADIO_PORT}:${SERVER}:${GRADIO_PORT} -L localhost:${VLLM_PORT}:${SERVER}:${VLLM_PORT} ${USER}@neuron.ksc.re.kr" > "$PORT_FWD_FILE"
 
 #######################################
 # Env / modules / Python selection
@@ -276,14 +276,14 @@ export OPENAI_BASE_URL="http://127.0.0.1:${VLLM_PORT}/v1"
 export OPENAI_API_KEY="sk-local"
 export DEFAULT_MODEL="${VLLM_MODEL}"
 
-nohup "$PYTHON_BIN" vllm_web.py --host=0.0.0.0 --port="${PORT_GRADIO}" > "$GRADIO_LOG" 2>&1 &
+nohup "$PYTHON_BIN" vllm_web.py --host=0.0.0.0 --port="${GRADIO_PORT}" > "$GRADIO_LOG" 2>&1 &
 GRADIO_PID=$!
 echo "Gradio PID: $GRADIO_PID"
 
 #######################################
 # Wait for Gradio UI
 #######################################
-GRADIO_URL="http://127.0.0.1:${PORT_GRADIO}/"
+GRADIO_URL="http://127.0.0.1:${GRADIO_PORT}/"
 echo "⏳ Waiting for Gradio UI at ${GRADIO_URL} ..."
 GRADIO_MAX_WAIT=900
 GRADIO_ELAPSED=0
@@ -313,11 +313,11 @@ fi
 #######################################
 echo "========================================="
 echo "🎉 All services started successfully!"
-echo "Gradio URL:  http://${SERVER}:${PORT_GRADIO}"
-echo "Local access: http://localhost:${PORT_GRADIO} (after port forwarding)"
+echo "Gradio URL:  http://${SERVER}:${GRADIO_PORT}"
+echo "Local access: http://localhost:${GRADIO_PORT} (after port forwarding)"
 echo "vLLM API:    http://${SERVER}:${VLLM_PORT}/v1"
 echo "Port forward for both:"
-echo "ssh -L localhost:${PORT_GRADIO}:${SERVER}:${PORT_GRADIO} -L localhost:${VLLM_PORT}:${SERVER}:${VLLM_PORT} ${USER}@neuron.ksc.re.kr"
+echo "ssh -L localhost:${GRADIO_PORT}:${SERVER}:${GRADIO_PORT} -L localhost:${VLLM_PORT}:${SERVER}:${VLLM_PORT} ${USER}@neuron.ksc.re.kr"
 echo "Logs:"
 echo "  vLLM:   $VLLM_LOG"
 echo "  Gradio: $GRADIO_LOG"
@@ -359,7 +359,7 @@ while true; do
       echo "⚠️  vLLM API not responding"
     fi
 
-    if curl -s --max-time 5 "http://127.0.0.1:${PORT_GRADIO}" >/dev/null 2>&1; then
+    if curl -s --max-time 5 "http://127.0.0.1:${GRADIO_PORT}" >/dev/null 2>&1; then
       echo "✅ Gradio UI responsive"
     else
       echo "⚠️  Gradio UI not responding"
